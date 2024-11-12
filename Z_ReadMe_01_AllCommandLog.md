@@ -1,3 +1,30 @@
+//
+Open PowerShell as Administrator:
+    [ Win + X ] >> Windows PowerShell (Admin).
+    Check the Current Execution Policy:
+    Run the command:
+        >>Get-ExecutionPolicy
+    This will likely return Restricted.
+
+Change the Execution Policy:
+    To allow script execution, run:
+        >> Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+    This command changes the policy to allow locally created scripts to run, while requiring a digital signature for scripts downloaded from the internet.
+
+Confirm the Change:
+    You can verify the new policy by running:
+        >> Get-ExecutionPolicy -List
+    Ensure that the CurrentUser scope is set to RemoteSigned
+
+
+// Install From GIT
+>> Install VS Code
+>> Install Node JS LTS
+>> Install Git
+>> clone the Repo
+>> Run :: npm install
+
+
 // P1
 npm init -y
 npm install cypress --save-dev
