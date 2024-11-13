@@ -17,6 +17,14 @@ module.exports = defineConfig({
 
     },
 
-    specPattern: "cypress/e2e/**/*.feature",
+    specPattern: [
+      "cypress/e2e/**/*.feature",
+"cypress/e2e/**/*.cy.js"
+      ]
+  "stepDefinitions": [
+    "cypress/e2e/[filepath]/**/*.{js,ts}",
+    "cypress/e2e/[filepath].{js,ts}",
+    "cypress/support/step_definitions/**/*.{js,ts}"
+  ]
   },
 });
