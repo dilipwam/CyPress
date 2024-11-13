@@ -9,7 +9,14 @@ module.exports = defineConfig({
     viewportHeight: 1080,
     defaultCommandTimeout: 60000,
     pageLoadTimeout: 120000,
-    experimentalSessionAndOrigin: true,
+
+    reporter: 'mochawesome',
+    reporterOptions: {
+      reportDir: 'cypress/reports',
+      overwrite: false,
+      html: false,
+      json: true,
+    },
 
     specPattern: ["cypress/e2e/**/*.feature", "cypress/e2e/**/*.cy.js"],
     stepDefinitions: [
