@@ -37,8 +37,17 @@ cypress.josn >> disable auto rerun >>  "watchForFileChanges": "false",
 npm install @badeball/cypress-cucumber-preprocessor --save-dev
 npm i -D cypress @bahmutov/cypress-esbuild-preprocessor esbuild
 
-Define step definition in package.json
-Update cypress.config.js to enable cucumber and read feature file.
+npm install --save-dev mocha
+npm install --save-dev mochawesome
+npm install mochawesome-merge --save-dev
+npm install mochawesome-report-generator --save-dev
+
+
+npm install mochawesome mochawesome-merge mochawesome-report-generator --save-dev
+
+
+Define specPattern and stepDefinitions in cypress.config.js
+
 
 Place the Feature file within e2e folder
 place the step definitaion as .ts or .js same folder, or within another folder with same name or within support/step_definition folder.
@@ -61,3 +70,16 @@ Cypress>>e2e>>**>>**>>testname.feature
 cypress>>support>>step_definitions>>xyz.js/ts
 
 
+
+
+
+
+    "clean-reports": "rmdir /S /Q cypress\\reports && del mochawesome.json && mkdir cypress\\reports && mkdir cypress\\reports\\mochareports",
+    "combine": "npx mochawesome-merge cypress/resports/*.json > mochawesome.json",
+    "htmlreport": "npx marge mochawesome.json",
+    "combine-reports": "mochawesome-merge cypress/reports/mocha/*.json > cypress/reports/mochareports/report.json",
+    "generate-report": "marge cypress/reports/mochareports/report.json -f report -o cypress/reports/mochareports",
+    "pretest": "npm run clean-reports",
+    "posttest": "npm run combine-reports && npm run generate-report",
+    "scripts": "cypress run",
+    "tests": "npm run pretest && npm run scripts && npm run posttest"
