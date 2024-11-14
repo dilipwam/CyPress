@@ -131,4 +131,5 @@ dist
 
 
 #Cypress Specific
+cypress/reports/*.*
 cypress/screenshots/*.*
