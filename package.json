@@ -17,8 +17,9 @@
     "generate-report": "marge cypress/reports/mochareports/report.json -f report -o cypress/reports/mochareports/",
     "pretest": "npm run clean:reports",
     "posttest": "npm run combine-reports && npm run generate-report",
-    "scripts": "cypress run",
-    "test": "npm run scripts || npm run posttest"
+    "test": "npm run scripts || npm run posttest",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^21.0.2",
