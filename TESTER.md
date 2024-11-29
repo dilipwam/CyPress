@@ -1,96 +1,7 @@
-# SET UP CYPRESS WITH BDD (With Explanations) 
-## By **DILIP K M** | [LinkedIn](https://www.linkedin.com/in/dkumar) | [GitHub](https://github.com/dilipwam) 
+# Implement Cucumber in Cypress 
+## By **Mohammad Monfared** | [LinkedIn](https://www.linkedin.com/in/mohammad-monfared) | [YouTube](https://www.youtube.com/automationcamp) | [Website](http://www.monfared.io/)
 
 ---
-Following Instruction in targetted to users with Windows and using NPM.
-Basic instructions will remain same, just change the syntax as per need
----
-## 1. Pre Requisite (SOFTWARES)
-SKIP this part, if NodeJS and any IDE is already installed.
-
-### 1.1 Install Node JS
-Make sure NodeJS is installed on your machine. If not navigate to [NodeJS](https://nodejs.org/en/download) to download the package and install it.
-
-### 1.2 Install Visual Studio CODE (or any other IDE)
-Similarly get VS Code installed on your machine, bay getting the package file from [VsCode](https://code.visualstudio.com/download).
-
-## 2. Get the prebuilt Files from the Repo (CLONE) and Start using it.
-It is pretty easy to clone the repository and you need not worry about configurations as it is tested and certified. All you need to do is, copy the GIT repo URL for [CyPress](https://github.com/dilipwam/CyPress.git) and use it to clone. Or use any other way to clone that you know of.
-OR download as compressed file and extract in your target directory.
-ALTERNATIVELY, use the CLI and use the following command in your target directory.
-```
-gh repo clone dilipwam/CyPress
-```
-Once you have cloned the file and it is ready, open the terminal or command prompt in the target folder and run the folloeing commands
-```
-npm install
-npm run cy:open
-```
-It will download and install all the dependencies, and start the project. If everything is okay you will see the cypress window, and some sample scripts.
-
-If it is the first time you are running cypress with a cloned repository, you may face some excptions with execution permission, and the install command will fail. In that case, run the following script with admin permission. To validate the access permissions, open the powershell or terminal as a admin.
-```
-Get-ExecutionPolicy
-```
-Thid will most likely return, "RESTRICTED". To allow script execution, run: >>  
-```
-Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-This command changes the policy to allow locally created scripts to run, while requiring a digital signature for scripts downloaded from the internet.
-Confirm the Change: You can verify the new policy by running:
-```
- Get-ExecutionPolicy -List
-```
- Ensure that the CurrentUser scope is set to RemoteSigned
-
-
-## 3. MANUAL installation (LEARN) with basic Troubleshooting
-### 3.1 Set up Cypress Project
-Once the required softwares are installed, open terminal or command prompt in the target directory. Remember this will be the root folder for the cypress project. Run the following two commands.
-```
-npm init -y
-npm install cypress --save-dev
-```
-The First line of command initializes the node in the target folder and creates the package.json file.
-The Second line of command installs the cypress as a dev dependency in the project folder.
-Open package.json file and add the *"cy:open": "cypress open"* under *scripts*. This way you will have a custom command to open the cypress window; and avoid possible conflict while working in other systems. The file will look something like this.
-```
-{
-  ...
-  "scripts":{
-    ...
-    "cy:open": "cypress open",
-    "cy:run": "cypress run",
-    ...
-  }
-  ...}
-```
-Once the files are ready, go ahead and open the Cypress Window by running
-```
-npm run cy:open
-```
-At this stage, Cypress will open and prompt to choose, project type.
->Test Engineers should always pock "e2e" testing.
-And in next step it will ask to select a browser.
->Pick any browser of your choice and continue.
-In next step it will ask to pick examples or blank spec.
->select create spec.
-If you follow the wizard, it will create a new spec file and run it.
-If you have selected demos, it would add the demo files with *e2e* folder and open in the test runner. You can click on any example and it will run.
-This will confirm that the cypress is installed properly.
-For Simple Cypress Project, this set up is enough and you can start coding.
-
-### 3.2 Install dependencies
-```
-npm install @badeball/cypress-cucumber-preprocessor --save-dev
-npm install @bahmutov/cypress-esbuild-preprocessor esbuild --save-dev
-npm install esbuild --save-dev
-```
-### 3.3 Configure BDD
-
-
-### 3.4 Configure Reports
-
 
 ## 0. Initial scenarios we're going to add as a spec file (we will have more later on)
 
@@ -132,7 +43,10 @@ npx cypress open
 
 ## 2. Install packages
 
-
+```javascript
+npm install @badeball/cypress-cucumber-preprocessor --save-dev
+npm install @bahmutov/cypress-esbuild-preprocessor --save-dev  // Bundle Cypress specs using esbuild - to increase performance
+```
 ## 3. Update cypress configs
 
 `cypress.config.js`
