@@ -1,5 +1,5 @@
 # SET UP CYPRESS WITH BDD (With Explanations) 
-## By **DILIP K M** | [LinkedIn](https://www.linkedin.com/in/dkumar) | [GitHub](https://github.com/dilipwam) 
+# By **DILIP K M** | [LinkedIn](https://www.linkedin.com/in/dkumar) | [GitHub](https://github.com/dilipwam) 
 
 ---
 Following Instruction in targetted to users with Windows and using NPM.
@@ -76,21 +76,20 @@ Once the files are ready, go ahead and open the Cypress Window by running
 npm run cy:open
 ```
 At this stage, Cypress will open and prompt to choose, project type.
->Test Engineers should always pock "e2e" testing.
+- Test Engineers should always pock "e2e" testing.
 And in next step it will ask to select a browser.
->Pick any browser of your choice and continue.
+- Pick any browser of your choice and continue.
 In next step it will ask to pick examples or blank spec.
->select create spec.
+- select create spec.
 If you follow the wizard, it will create a new spec file and run it.
 If you have selected demos, it would add the demo files with *e2e* folder and open in the test runner. You can click on any example and it will run.
 This will confirm that the cypress is installed properly.
 For Simple Cypress Project, this set up is enough and you can start coding.
 
 ### 3.2 Sample Test Scripts for Testing
-While this step is not needed, you need to add some test files to your project folder to check that your scripts are working.
+While this step is not needed and can be done later, you need to add some test files to your project folder to check that your configuration is working.
 
 #### 3.2.1 Simple cypress Test File
-
 `cypress/e2e/spec.cy.js`
 ```javascript
 describe('template spec', () => {
@@ -100,7 +99,6 @@ describe('template spec', () => {
 })
 ```
 #### 3.2.2 Feature file for BDD
-
 `cypress/e2e/duckduckgo.feature`
 ```gherkin
 Feature: duckduckgo.com
@@ -131,26 +129,26 @@ Then("I should see a search bar", () => {
 Depending on which version of cypress someone started scripting, the configuration may be written differently and could be scatterred.
 While the older version of cypress were forgiving, the recent ones are a bit sctrict.
 
-**Use the guidelines for better compatibility**
-- do not write any configurations in *cypress.json*. Move all the configuration information from *cypress.json* to *cypress.config.js*
+**Use the following guideline for better compatibility**
+- DO NOT write any configurations in *cypress.json*. Move all the configuration information from *cypress.json* to *cypress.config.js*
 - depending on your preference you may use javascript or typescript. For this example I am using javascripts and hence the extension to *cypress.config* is *.js* . If you are using typescript then update the extension to *.ts* and change all syntax to typescript format.
 - Depending on your project requirement, you may need to play around with the configuration as needed.
 - Use *defineconfig* block to include all the configuration. It will be applied to all.
   - If you have e2e testing specific configurations, add them to *e2e* block within *defineconfig*.
   - If you have component testing specific configurations, add them to *component* block within *defineconfig*.
-- If it is working then do not update, unless needed.
+- ***If it is working then do not update, unless needed.***
 
 
 #### 3.3.1 CUCUMBER PREPROCESSOR
 Follow this section to configure BDD / Cucumber for your project
 ##### 3.3.1.1 - Install Dependencies
+Use the terminal window and run the following commands within the root directory of the project folder.
 ```
-npm install @badeball/cypress-cucumber-preprocessor --save-dev
-npm install @bahmutov/cypress-esbuild-preprocessor --save-dev
-npm install esbuild --save-dev
+npm install @badeball/cypress-cucumber-preprocessor @bahmutov/cypress-esbuild-preprocessor esbuild --save-dev
 ```
 
 ##### 3.3.1.2 - Configuration
+Add following lines to your *çypress.config.js* file. If you are using typescript, follow the *.ts* specific syntax. Everything else will be same.
 `cypress.config.js`
 ```javascript
 const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
@@ -187,9 +185,19 @@ module.exports = defineConfig({
     },
 });
 ```
--SpecPattern - Tells the test scpcification files
--Stepdefinitions - Tells where to pick the Test Definitions for the spec.
--esbuild - Improves and Extends the capabilities
+Notes:
+  - SpecPattern - Gives the test scpcification files
+  - Stepdefinitions - Tells where to pick the Test Definitions for the spec.
+  - You can alway specify multiple types and multiple locations for both pattern as well as definitions. 
+  - esbuild - Improves and Extends the capabilities
+
+**Explanations:**
+- ***SpecPattern*** tells cypress to read the test spec files within all folders and sub folders within e2e folder. It also says the both *.cy.js* and *.feature* files are to be considered.
+- ***SpecDefinitions*** tells cypress that
+  1. The test definitions files are stored within the same folder as the feature files with same name. Second line tells
+  2. The test definitions files are stored within a folder of same name as the feature file. In this case, the specdefinition file need not share same name as the feature file.
+  3. The test definition files are stored within *Spec_Definitions* folder. In this case all the spec files present in this folder will be shared by all spec files, and will take precedence. Hence be careful about what files are placed in this locations.
+
 
 ##### 3.3.1.3 - Validation
 In the terminal run the script
@@ -201,57 +209,119 @@ npm run cy:open
 - You will be able to see the test spec files, based on the cypress configuration.
 - If you followed the steps in the example, you will see both *.feature* as well as *.cy.js* files.
 - Clicking any one of those, will run the test as per the script.
-- In case any issues are encountered whiile running feature files, *pause* and *check the configurations*.
+- In case any issues are encountered whiile running feature files, *pause* and *check & Recheck the configurations*.
 
-### 3.4 Configure Reports
-While cypress has inbuilt reporting, Follow this section to configure Mochareports for your project
-#### 3.4.1 - Dependencies
+### 3.3.2 Configure Reports (HTML with MochAwesome)
+While cypress supports multiple reporting, the MochAwesome HTML stands out. Follow this section to configure Mocha Reports for your project
+#### 3.3.2.1 - Dependencies
+Use the terminal window and run the following commands within the root directory of the project folder.
 ```
-npm install @badeball/cypress-cucumber-preprocessor --save-dev
-npm install @bahmutov/cypress-esbuild-preprocessor esbuild --save-dev
-npm install esbuild --save-dev
-```
-
-#### 3.4.2 - Configuration
-```npm
-npm install @badeball/cypress-cucumber-preprocessor --save-dev
-npm install @bahmutov/cypress-esbuild-preprocessor esbuild --save-dev
-npm install esbuild --save-dev
+npm install mochawesome mochawesome-merge mochawesome-report-generator --save-dev
 ```
 
-`cypress.config.js`
-
+#### 3.3.2.2 - Configuration
+Add following lines to your *çypress.config.js* file. Make sure you place it inside e2e block for e2e testing. If you are using typescript, follow the *.ts* specific syntax. Everything else will be same.
+````javascript
+...
+  reporter: "mochawesome",
+    reporterOptions: {
+      reportDir: "cypress/reports",
+      overwrite: false,
+      html: false,
+      json: true,
+    },
+    ---
+````
+Once done, the `cypress.config.js` file will appear like this
 ```javascript
-const { defineConfig } = require("cypress");
 const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
-const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
-const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild");
+const addCucumberPreprocessorPlugin =
+  require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin;
+const createEsbuildPlugin =
+  require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
+const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
+    viewportWidth: 1920,
+    viewportHeight: 1080,
+    defaultCommandTimeout: 60000,
+    pageLoadTimeout: 120000,
+
+    reporter: "mochawesome",
+    reporterOptions: {
+      reportDir: "cypress/reports",
+      overwrite: false,
+      html: false,
+      json: true,
+    },
+
+    specPattern: ["cypress/e2e/**/*.feature", "cypress/e2e/**/*.cy.js"],
+    stepDefinitions: [
+      "cypress/e2e/[filepath]/**/*.{js,ts}",
+      "cypress/e2e/[filepath].{js,ts}",
+      "cypress/support/step_definitions/**/*.{js,ts}",
+    ],
+
     setupNodeEvents(on, config) {
-      on("file:preprocessor",
-      createBundler({
-        plugins: [createEsbuildPlugin.default(config)],
-      }));
-      preprocessor.addCucumberPreprocessorPlugin(on, config);
+      const bundler = createBundler({
+        plugins: [createEsbuildPlugin(config)],
+      });
+
+      on("file:preprocessor", bundler);
+      addCucumberPreprocessorPlugin(on, config);
       return config;
     },
-	specPattern: "**/*.feature",
   },
-})
 
+});
 ```
 
-## 4. Update "cypress-cucumber-preprocessor" configs (Set step definitions path and make them global)
-`package.json`
-
+Once done, the framework is ready to generate the HTML report making use of the generated mocha reports.
+TO generate the report, add the following script to the scripts section within *package.json* file.
 ```javascript
-"cypress-cucumber-preprocessor": {
-    "step_definitions": "cypress/support/step_definitions/",
-    "nonGlobalStepDefinitions": false
-  }
+"clean:reports": "rmdir /S /Q  cypress\\reports && mkdir cypress\\reports && mkdir cypress\\reports\\mochareports",
+"combine-reports": "mochawesome-merge cypress/reports/*.json > cypress/reports/mochareports/report.json",
+"pretest": "npm run clean:reports",
+
+"generate-report": "marge cypress/reports/mochareports/report.json -f report -o cypress/reports/mochareports/",
+"posttest": "npm run combine-reports && npm run generate-report",
+
+"cy:run": "cypress run",
+"cy:test": "npm run pretest && npm run cy:run && npm run posttest"
 ```
+
+
+**Explanations:**
+- ***PreTest*** clears any old files in the reporting folder and prepares the folders in case not there.
+- ***PostTest*** Merges the test reports into single HTML file and places it in the defined location.
+- You will need to include these two scripts to all your rn commands where reports are required.
+
+The 'package.json' will look like this after the changes.
+```javascript
+{
+...
+  "scripts": {
+    "clean:reports": "rmdir /S /Q  cypress\\reports && mkdir cypress\\reports && mkdir cypress\\reports\\mochareports",
+    "combine-reports": "mochawesome-merge cypress/reports/*.json > cypress/reports/mochareports/report.json",
+    "generate-report": "marge cypress/reports/mochareports/report.json -f report -o cypress/reports/mochareports/",
+    "pretest": "npm run clean:reports",
+    "posttest": "npm run combine-reports && npm run generate-report",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:test": "npm run pretest && npm run cy:run && npm run posttest"
+  },
+  ...
+}
+```
+
+#### 3.3.2.3 - Verification
+In the terminal run the following script.
+```npm
+npm run cy:test
+```
+This will execute all the scripts in the console. It will show the status of all the script execution. Later a HTML file will be generated within the mochareports fodlder.
+
 
 
 # THANK YOU 🙂
