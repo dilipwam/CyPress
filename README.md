@@ -9,10 +9,16 @@ Basic instructions will remain same, just change the syntax as per need
 SKIP this part, if NodeJS and any IDE is already installed.
 
 ### 1.1 Install Node JS
-Make sure NodeJS is installed on your machine. If not navigate to [NodeJS](https://nodejs.org/en/download) to download the package and install it.
+Make sure NodeJS is installed on your machine. If not navigate to [NodeJS](https://nodejs.org/en/download) to download the package from official site and install it.
 
 ### 1.2 Install Visual Studio CODE (or any other IDE)
 Similarly get VS Code installed on your machine, bay getting the package file from [VsCode](https://code.visualstudio.com/download).
+
+### 1.3 Install Extensions for VS code
+While extensions are always optionsal, they make life lot easy. Also as VS code does not bundle any specific language support it can be helpful to get the relevant extensions. I prefer the following two extentions over others.
+
+- [prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) -- For text formatting
+- [Cucumber (Gherkin) Full Support](https://marketplace.visualstudio.com/items?itemName=alexkrechik.cucumberautocomplete) -- For Cucumber Syntax support
 
 ## 2. Get the prebuilt Files from the Repo (CLONE) and Start using it.
 It is pretty easy to clone the repository and you need not worry about configurations as it is tested and certified. All you need to do is, copy the GIT repo URL for [CyPress](https://github.com/dilipwam/CyPress.git) and use it to clone. Or use any other way to clone that you know of.
@@ -44,7 +50,7 @@ Confirm the Change: You can verify the new policy by running:
  Ensure that the CurrentUser scope is set to RemoteSigned
 
 
-## 3. MANUAL installation (LEARN) with basic Troubleshooting
+## 3. MANUAL installation (LEARN with basic Troubleshooting)
 ### 3.1 Set up Cypress Project
 Once the required softwares are installed, open terminal or command prompt in the target directory. Remember this will be the root folder for the cypress project. Run the following two commands.
 ```
@@ -54,7 +60,7 @@ npm install cypress --save-dev
 The First line of command initializes the node in the target folder and creates the package.json file.
 The Second line of command installs the cypress as a dev dependency in the project folder.
 Open package.json file and add the *"cy:open": "cypress open"* under *scripts*. This way you will have a custom command to open the cypress window; and avoid possible conflict while working in other systems. The file will look something like this.
-```
+```javascript
 {
   ...
   "scripts":{
@@ -80,60 +86,138 @@ If you have selected demos, it would add the demo files with *e2e* folder and op
 This will confirm that the cypress is installed properly.
 For Simple Cypress Project, this set up is enough and you can start coding.
 
-### 3.2 Install dependencies
+### 3.2 Sample Test Scripts for Testing
+While this step is not needed, you need to add some test files to your project folder to check that your scripts are working.
+
+#### 3.2.1 Simple cypress Test File
+
+`cypress/e2e/spec.cy.js`
+```javascript
+describe('template spec', () => {
+  it('passes', () => {
+    cy.visit('https://example.cypress.io')
+  })
+})
+```
+#### 3.2.2 Feature file for BDD
+
+`cypress/e2e/duckduckgo.feature`
+```gherkin
+Feature: duckduckgo.com
+  Scenario: visiting the frontpage
+    When I visit duckduckgo.com
+    Then I should see a search bar
+  ```
+
+#### 3.2.3 Spec Definition file for BDD
+
+`cypress/e2e/duckduckgo.js`
+```javascript
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
+
+When("I visit duckduckgo.com", () => {
+  cy.visit("https://www.duckduckgo.com");
+});
+
+Then("I should see a search bar", () => {
+  cy.get('input#searchbox_input')
+  .should("be.visible")
+  .should("have.attr","aria-label","Search with DuckDuckGo")
+  .should("have.attr","placeholder","Search without being tracked")
+  });
+  ```
+
+### 3.3 CYPRESS Configurations:
+Depending on which version of cypress someone started scripting, the configuration may be written differently and could be scatterred.
+While the older version of cypress were forgiving, the recent ones are a bit sctrict.
+
+**Use the guidelines for better compatibility**
+- do not write any configurations in *cypress.json*. Move all the configuration information from *cypress.json* to *cypress.config.js*
+- depending on your preference you may use javascript or typescript. For this example I am using javascripts and hence the extension to *cypress.config* is *.js* . If you are using typescript then update the extension to *.ts* and change all syntax to typescript format.
+- Depending on your project requirement, you may need to play around with the configuration as needed.
+- Use *defineconfig* block to include all the configuration. It will be applied to all.
+  - If you have e2e testing specific configurations, add them to *e2e* block within *defineconfig*.
+  - If you have component testing specific configurations, add them to *component* block within *defineconfig*.
+- If it is working then do not update, unless needed.
+
+
+#### 3.3.1 CUCUMBER PREPROCESSOR
+Follow this section to configure BDD / Cucumber for your project
+##### 3.3.1.1 - Install Dependencies
+```
+npm install @badeball/cypress-cucumber-preprocessor --save-dev
+npm install @bahmutov/cypress-esbuild-preprocessor --save-dev
+npm install esbuild --save-dev
+```
+
+##### 3.3.1.2 - Configuration
+`cypress.config.js`
+```javascript
+const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
+const addCucumberPreprocessorPlugin =
+    require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin;
+const createEsbuildPlugin =
+    require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
+const {
+    defineConfig
+} = require("cypress");
+
+module.exports = defineConfig({
+    e2e: {
+
+        specPattern: [
+            "cypress/e2e/**/*.feature",
+            "cypress/e2e/**/*.cy.js"
+        ],
+        stepDefinitions: [
+            "cypress/e2e/[filepath]/**/*.{js,ts}",
+            "cypress/e2e/[filepath].{js,ts}",
+            "cypress/support/step_definitions/**/*.{js,ts}",
+        ],
+
+        setupNodeEvents(on, config) {
+            const bundler = createBundler({
+                plugins: [createEsbuildPlugin(config)],
+            });
+
+            on("file:preprocessor", bundler);
+            addCucumberPreprocessorPlugin(on, config);
+            return config;
+        },
+    },
+});
+```
+-SpecPattern - Tells the test scpcification files
+-Stepdefinitions - Tells where to pick the Test Definitions for the spec.
+-esbuild - Improves and Extends the capabilities
+
+##### 3.3.1.3 - Validation
+In the terminal run the script
+```
+npm run cy:open
+```
+- This will open the Cypress test window.
+- Proceed by selecting e2e testing and any preferred browser.
+- You will be able to see the test spec files, based on the cypress configuration.
+- If you followed the steps in the example, you will see both *.feature* as well as *.cy.js* files.
+- Clicking any one of those, will run the test as per the script.
+- In case any issues are encountered whiile running feature files, *pause* and *check the configurations*.
+
+### 3.4 Configure Reports
+While cypress has inbuilt reporting, Follow this section to configure Mochareports for your project
+#### 3.4.1 - Dependencies
 ```
 npm install @badeball/cypress-cucumber-preprocessor --save-dev
 npm install @bahmutov/cypress-esbuild-preprocessor esbuild --save-dev
 npm install esbuild --save-dev
 ```
-### 3.3 Configure BDD
 
-
-### 3.4 Configure Reports
-
-
-## 0. Initial scenarios we're going to add as a spec file (we will have more later on)
-
-```feature
-Feature: Login functionalities
-  Scenario: Verify valid login 
-    Given I am in login page
-    When I enter valid username and password
-    And I click on login button
-    Then I should logged in and redirected to dashboard page
-
-  Scenario: Verify invalid login
-    Given I am in login page
-    When I enter invalid username and password
-    And I click on login button
-    Then I should see invalid credentials message
-
-Feature: User filter functionalities
-  Scenario: Verify filter users by username
-    Given I am logged in
-    And I am in admin page 
-    When I put "admin" in user filter field
-    Then the list should contain 1 record
-
-  Scenario: Verify filter users by role
-    Given I am logged in
-    And I am in admin page
-    When I select "admin" from role filter 
-    Then the list should contain 6 record
-
+#### 3.4.2 - Configuration
+```npm
+npm install @badeball/cypress-cucumber-preprocessor --save-dev
+npm install @bahmutov/cypress-esbuild-preprocessor esbuild --save-dev
+npm install esbuild --save-dev
 ```
-## 1. Initialize node project and install cypress 
-
-```
-npm init -y
-npm install cypress --save-dev
-npx cypress open
-```
-
-## 2. Install packages
-
-
-## 3. Update cypress configs
 
 `cypress.config.js`
 
@@ -168,272 +252,6 @@ module.exports = defineConfig({
     "nonGlobalStepDefinitions": false
   }
 ```
-## 5. Add IDE plugin for `.feature` files
 
-This is one of the bests for VS-Code: [Cucumber (Gherkin) Full Support](https://marketplace.visualstudio.com/items?itemName=alexkrechik.cucumberautocomplete)
 
-## 6 .Add feature files
-
-`e2e/Login.feature`
-
-```gherkin
-Feature: Login features
-  Scenario: Verify valid login 
-    Given I am in login page
-    When I enter valid username and password
-    And I click on login button
-    Then I should logged in and redirected to dashboard page
-    
-  Scenario: Verify invalid login
-    Given I am in login page
-    When I enter invalid username and password
-	  And I click on login button
-    Then I should see invalid credentials message
-```
-
-`e2e/Users.feature`
-
-```gherkin
-Feature: Users filter
-  Scenario: Verify filter users by username
-    Given I am logged in
-    And I am in admin page 
-    When I put "admin" in user filter field
-    Then the list should contain 1 record
-
-  Scenario: Verify filter users by role
-    Given I am logged in
-    And I am in admin page
-    When I select "admin" from role filter 
-    Then the list should contain 6 record
-```
-
-## 7. Add Step Definitions
-
-`cypress/support/step_definitions/steps.js`
-
-```javascript
-import { Given, When, Then, DataTable } from '@badeball/cypress-cucumber-preprocessor'
-
-Given('I am in login page', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com')
-  })
-
-When ('I enter valid username and password', () => {
-  cy.fixture('users.json').then((users) => {
-    cy.get('input[name=username]').type(users.valid.username)
-    cy.get('input[name=password]').type(users.valid.password)
-  })
-})
-
-When ('I click on login button' , () => {
-   cy.get('button[type=submit]').click()
-})
-
-Then('I should logged in and redirected to dashboard page', () => {
-  cy.get('p.oxd-userdropdown-name').should('be.visible')
-})
-
-When ('I enter invalid username and password', () => {
-  cy.fixtures('users.json').then((users) => {
-    cy.get('input[name=username]').type(users.invalid.username)
-    cy.get('input[name=password]').type(users.invalid.password)
-  })
-})
-
-Then('I should see invalid credentials message', () => {
-  cy.contains('Invalid credentials').should('be.visible')
-})
-
-```
-
-## 8. How to pass value
-
-```javascript
-When('I enter {string} in username field',
-    (username) => {
-      cy.get('input[name=username]').type(username)
-    }
-  )
-```
-## 9. How to use regex in step definition title for combine multiple definitions
-
-### Example 1
-
-```javascript
-Then(/the "(.*)" checkbox should be (enabled|disabled)/, (text, state) => {
-    cy.get(`input[name=${text}]`).should(`be.${state}`)
-})
-```
-
-```feature
-Then the "Java" checkbox should be disabled
-```
-### Example 2
-
-```javascript
-Then(/the checkbox with id "(.*)" should be (selected|unselected)/, (id, condition) =>
-  cy.get(`#${id}`).should(condition === 'selected' ? 'be.checked' : 'not.be.checked')
-)
-```
-```feature
-And the checkbox with id "check_python" should be unselected
-```
-
-### Example 3 
-
-```javascript
-
-// Given('I visit the {string} page', (url) => {
-//     cy.visit(url)
-// })
-
-Then(/I should( not)? see the "(.*)" (radio button|toggle|checkbox)/,
-  (condition, text) => {
-    cy.get(`input[name=${text}]`).should(condition ? 'not.exist' : 'exist')
-  }
-)
-```
-
-```feature
-And I should see the "german" toggle
-Then I should not see "german" toggle
-```
-
-### Example 4
-
-```javascript
-When(/I scroll the table with locator "(.*)" (\d*) pixels (down|right)/,
-  (locator, pixels, direction) => {
-    const options = { duration: 250 };
-    switch (direction) {
-      case 'down':
-        cy.get(locator).scrollTo('0px', `${pixels}px`, options);
-        break;
-      case 'right':
-        cy.get(locator).scrollTo(`${pixels}px`, '0px', options);
-    }
-    cy.wait(500);
-  }
-)
-```
-```feature
-Feature: Feature 1
-  Scenario: Scenario 4
-    Given I visit the "https://datatables.net/examples/basic_init/scroll_xy.html" page
-    When I scroll the table with locator ".dataTables_scrollBody" 100 pixels right
-    And I scroll the table with locator ".dataTables_scrollBody" 200 pixels down
-```
-
-## 10. How to do DataDrivenTesting
-
-```javascript
-Given('I am in playground page', () => {
-    cy.visit('https://play1.automationcamp.ir/forms.html')
-  })
-
-When (/I check the "(.*)" (checkbox|toggle|radio button)/, (text) => {
-  cy.get(`input[name=${text}]`).check()
-})
-
-Then(/the checkbox with id "(.*)" should be (selected|unselected)/, (id, condition) =>
-  cy.get(`#${id}`).should(condition === 'selected' ? 'be.checked' : 'not.be.checked')
-) 
-
-Then(/the validate text with id "(.*)" should have text "(.*)"/, (id, text) => {
-  cy.get(`#${id}`).should('have.text', text)
-})
-```
-
-```feature
-Feature: Feature 1
-
-  Scenario Outline: Scenario 6
-    Given I am in playground page 
-    When I check the "<language>" checkbox
-    Then the checkbox with id "<checkboxID>" should be <status>
-    And the validate text with id "<textID>" should have text "<validateText>"
-  Examples:
-      | language | checkboxID | status | textID | validateText|
-      | python | check_python | selected | check_validate | PYTHON |
-      | javascript | check_javascript | selected | check_validate | JAVASCRIPT |
-```
-## 11. Steps with Data-tables
-
-```javascript
-When("I select multiple skills", (datatable) => {
-  datatable.raw().forEach(item => {
-    cy.get(`input[name=${item[0]}]`).check()
-    cy.get(`#${item[1]}`).should('be.checked')
-  })
-})
-```
-
-```feature
-Feature: Feature 1
-
-  Scenario: Scenario 7 - Datatable
-      Given I am in playground page
-      When I select multiple skills
-      | python| check_python | 
-      | javascript | check_javascript |
-      Then the validate text with id "check_validate" should have text "PYTHON JAVASCRIPT"
-```
-## 12. Background and Hooks
-
-```javascript
-Given("Make environment ready", () => {
-  cy.log('Background hook - make env ready for use')
-})
-```
-
-```feature
-Feature: Add todo functionality
-  Background: Test setup
-    Given Make environment ready
-
-  Scenario: Add multiple todos
-  ...
-
-```
-
-```javascript
-import { Given, When, Then, Before, After } from '@badeball/cypress-cucumber-preprocessor'
-
-Before(() => {
-  cy.log('Before each test')
-})
-After(() => {
-  cy.log('After each test')
-})
-```
-
-## 13. Tags
-
-```gherkin
-
-Feature: Login features
-
-  @regression
-  Scenario: Verify valid login 
-    Given I am in login page
-    When I enter valid username and password
-    And I click on login button
-    Then I should logged in and redirected to dashboard page
-  
-  @smoke
-  Scenario: Verify invalid login
-    Given I am in login page
-    When I enter invalid username and password
-	  And I click on login button
-    Then I should see invalid credentials message
-```
-```
-npx cypress run --env tags="@smoke"
-npx cypress run --env tags="not @smoke"
-npx cypress run --env tags="@smoke or @regression"
-npx cypress run --env tags="@smoke and @regression"
-
-```
-
-## THANK YOU 🙂
+# THANK YOU 🙂
