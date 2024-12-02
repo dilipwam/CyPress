@@ -2,8 +2,8 @@
 # By **DILIP K M** | [LinkedIn](https://www.linkedin.com/in/dmahato/) | [GitHub](https://github.com/dilipwam) 
 
 ---
-Following Instruction in targetted to users with Windows and using NPM.
-Basic instructions will remain same, just change the syntax as per need
+Following Instruction is targetted to users with Windows and using NPM.
+Basic instructions will remain same, just change the syntax as per your need
 ---
 ## 1. Pre Requisite (SOFTWARES)
 SKIP this part, if NodeJS and any IDE is already installed.
@@ -198,8 +198,34 @@ Notes:
   2. The test definitions files are stored within a folder of same name as the feature file. In this case, the specdefinition file need not share same name as the feature file.
   3. The test definition files are stored within *Spec_Definitions* folder. In this case all the spec files present in this folder will be shared by all spec files, and will take precedence. Hence be careful about what files are placed in this locations.
 
+##### 3.3.1.3 - BDD File Structure
+Following is a sample file structure which can be used. The *SpecPattern* and *SpecDefinitions* attributes in the *cypress.config.js* governs it. You can modify it as per your need.
+```
++ CYPRESS
+|--- + e2e
+|    |--- MyTest1.cy.js
+|    |--- + Test2
+|    |    |--- MyTest2.cy.js
+|    |
+|    |--- feature1.feature
+|    |--- feature1.js
+|    |
+|    |--- +- MyFeatureTest
+|    |    |--- feature2.feature
+|    |    |--- feature2.js
+|    |
+|    |--- feature3.feature
+|    |--- + feature3
+|    |    |--- SpecDefForFeature3.js
+|    |
+|    |--- feature4.feature
+|
+|--- +- Support
+|    |--- + step_definitions
+|         |--- GlobalSpecDefinitions.js
+```
 
-##### 3.3.1.3 - Validation
+##### 3.3.1.4 - Validation
 In the terminal run the script
 ```
 npm run cy:open
@@ -324,4 +350,4 @@ This will execute all the scripts in the console. It will show the status of all
 
 
 
-# THANK YOU 🙂
+## THANK YOU 🙂
