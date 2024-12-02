@@ -1,6 +1,8 @@
 const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
-const addCucumberPreprocessorPlugin =  require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin;
-const createEsbuildPlugin =  require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
+const addCucumberPreprocessorPlugin =
+  require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin;
+const createEsbuildPlugin =
+  require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
@@ -10,9 +12,9 @@ module.exports = defineConfig({
     defaultCommandTimeout: 60000,
     pageLoadTimeout: 120000,
 
-    reporter: 'mochawesome',
+    reporter: "mochawesome",
     reporterOptions: {
-      reportDir: 'cypress/reports',
+      reportDir: "cypress/reports",
       overwrite: false,
       html: false,
       json: true,
@@ -34,7 +36,13 @@ module.exports = defineConfig({
       addCucumberPreprocessorPlugin(on, config);
       return config;
     },
+  },
 
-
+  component: {
+    devServer: {
+      framework: "angular",
+      bundler: "webpack",
+    },
+    specPattern: "**/*.cy.ts",
   },
 });
