@@ -1,5 +1,5 @@
 # SET UP CYPRESS WITH BDD (With Explanations) 
-# By **DILIP K M** | [LinkedIn](https://www.linkedin.com/in/dkumar) | [GitHub](https://github.com/dilipwam) 
+# By **DILIP K M** | [LinkedIn](https://www.linkedin.com/in/dmahato/) | [GitHub](https://github.com/dilipwam) 
 
 ---
 Following Instruction in targetted to users with Windows and using NPM.
