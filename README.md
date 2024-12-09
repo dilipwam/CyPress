@@ -24,27 +24,27 @@ While extensions are always optionsal, they make life lot easy. Also as VS code 
 It is pretty easy to clone the repository and you need not worry about configurations as it is tested and certified. All you need to do is, copy the GIT repo URL for [CyPress](https://github.com/dilipwam/CyPress.git) and use it to clone. Or use any other way to clone that you know of.
 OR download as compressed file and extract in your target directory.
 ALTERNATIVELY, use the CLI and use the following command in your target directory.
-```
+```node
 gh repo clone dilipwam/CyPress
 ```
 Once you have cloned the file and it is ready, open the terminal or command prompt in the target folder and run the folloeing commands
-```
+```node
 npm install
 npm run cy:open
 ```
 It will download and install all the dependencies, and start the project. If everything is okay you will see the cypress window, and some sample scripts.
 
 If it is the first time you are running cypress with a cloned repository, you may face some excptions with execution permission, and the install command will fail. In that case, run the following script with admin permission. To validate the access permissions, open the powershell or terminal as a admin.
-```
+```dos
 Get-ExecutionPolicy
 ```
 Thid will most likely return, "RESTRICTED". To allow script execution, run: >>  
-```
+```dos
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 This command changes the policy to allow locally created scripts to run, while requiring a digital signature for scripts downloaded from the internet.
 Confirm the Change: You can verify the new policy by running:
-```
+```dos
  Get-ExecutionPolicy -List
 ```
  Ensure that the CurrentUser scope is set to RemoteSigned
@@ -53,7 +53,7 @@ Confirm the Change: You can verify the new policy by running:
 ## 3. MANUAL installation (LEARN with basic Troubleshooting)
 ### 3.1 Set up Cypress Project
 Once the required softwares are installed, open terminal or command prompt in the target directory. Remember this will be the root folder for the cypress project. Run the following two commands.
-```
+```node
 npm init -y
 npm install cypress --save-dev
 ```
