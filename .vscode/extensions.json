@@ -1,8 +1,8 @@
 {
-    "recommendations": [
-        "alexkrechik.cucumberautocomplete",
-        "esbenp.prettier-vscode",
-        "shd101wyy.markdown-preview-enhanced",
-        "sandcastle.vscode-open"
-    ]
+  "recommendations": [
+    "alexkrechik.cucumberautocomplete",
+    "esbenp.prettier-vscode",
+    "shd101wyy.markdown-preview-enhanced",
+    "sandcastle.vscode-open"
+  ]
 }

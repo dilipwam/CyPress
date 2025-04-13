@@ -1,0 +1,6 @@
+.vs
+node_modules
+dist
+cypress/reports
+cypress/screenshots
+cypress/videos
