@@ -40,5 +40,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/dilipwam/CyPress"
+  },
+  "dependencies": {
+    "@azure/identity": "^4.8.0",
+    "@azure/keyvault-secrets": "^4.9.0",
+    "dotenv": "^16.5.0"
   }
 }

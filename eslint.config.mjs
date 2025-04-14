@@ -1,3 +1,4 @@
+//import pluginCypress from 'eslint-plugin-cypress/flat'
 import { defineConfig } from 'eslint/config';
 import js from '@eslint/js';
 import globals from 'globals';
