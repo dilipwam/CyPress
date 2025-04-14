@@ -1,21 +1,9 @@
-<<<<<<< Updated upstream
 # SET UP CYPRESS WITH BDD (With Explanations) 
 # By **DILIP K M** | [LinkedIn](https://www.linkedin.com/in/dmahato/) | [GitHub](https://github.com/dilipwam) 
 
 ---
 Following Instruction is targetted to users with Windows and using NPM.
 Basic instructions will remain same, just change the syntax as per your need
-=======
-# SET UP CYPRESS WITH BDD (With Explanations)
-
-# By **DILIP K M** | [LinkedIn](https://www.linkedin.com/in/dkumar) | [GitHub](https://github.com/dilipwam)
-
----
-
-Following Instruction in targetted to users with Windows and using NPM.
-Basic instructions will remain same, just change the syntax as per need
-
->>>>>>> Stashed changes
 ---
 
 ## 1. Pre Requisite (SOFTWARES)
@@ -42,22 +30,12 @@ While extensions are always optionsal, they make life lot easy. Also as VS code 
 It is pretty easy to clone the repository and you need not worry about configurations as it is tested and certified. All you need to do is, copy the GIT repo URL for [CyPress](https://github.com/dilipwam/CyPress.git) and use it to clone. Or use any other way to clone that you know of.
 OR download as compressed file and extract in your target directory.
 ALTERNATIVELY, use the CLI and use the following command in your target directory.
-<<<<<<< Updated upstream
 ```node
-=======
-
-```
->>>>>>> Stashed changes
 gh repo clone dilipwam/CyPress
 ```
 
 Once you have cloned the file and it is ready, open the terminal or command prompt in the target folder and run the folloeing commands
-<<<<<<< Updated upstream
 ```node
-=======
-
-```
->>>>>>> Stashed changes
 npm install
 npm run cy:open
 ```
@@ -65,33 +43,17 @@ npm run cy:open
 It will download and install all the dependencies, and start the project. If everything is okay you will see the cypress window, and some sample scripts.
 
 If it is the first time you are running cypress with a cloned repository, you may face some excptions with execution permission, and the install command will fail. In that case, run the following script with admin permission. To validate the access permissions, open the powershell or terminal as a admin.
-<<<<<<< Updated upstream
 ```dos
 Get-ExecutionPolicy
 ```
 Thid will most likely return, "RESTRICTED". To allow script execution, run: >>  
 ```dos
-=======
-
-```
-Get-ExecutionPolicy
-```
-
-Thid will most likely return, "RESTRICTED". To allow script execution, run: >>
-
-```
->>>>>>> Stashed changes
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 This command changes the policy to allow locally created scripts to run, while requiring a digital signature for scripts downloaded from the internet.
 Confirm the Change: You can verify the new policy by running:
-<<<<<<< Updated upstream
 ```dos
-=======
-
-```
->>>>>>> Stashed changes
  Get-ExecutionPolicy -List
 ```
 
@@ -102,12 +64,7 @@ Ensure that the CurrentUser scope is set to RemoteSigned
 ### 3.1 Set up Cypress Project
 
 Once the required softwares are installed, open terminal or command prompt in the target directory. Remember this will be the root folder for the cypress project. Run the following two commands.
-<<<<<<< Updated upstream
 ```node
-=======
-
-```
->>>>>>> Stashed changes
 npm init -y
 npm install cypress --save-dev
 ```
@@ -267,7 +224,6 @@ Notes:
 - **_SpecDefinitions_** tells cypress that
   1. The test definitions files are stored within the same folder as the feature files with same name. Second line tells
   2. The test definitions files are stored within a folder of same name as the feature file. In this case, the specdefinition file need not share same name as the feature file.
-<<<<<<< Updated upstream
   3. The test definition files are stored within *Spec_Definitions* folder. In this case all the spec files present in this folder will be shared by all spec files, and will take precedence. Hence be careful about what files are placed in this locations.
 
 ##### 3.3.1.3 - BDD File Structure
@@ -298,12 +254,6 @@ Following is a sample file structure which can be used. The *SpecPattern* and *S
 ```
 
 ##### 3.3.1.4 - Validation
-=======
-  3. The test definition files are stored within _Spec_Definitions_ folder. In this case all the spec files present in this folder will be shared by all spec files, and will take precedence. Hence be careful about what files are placed in this locations.
-
-##### 3.3.1.3 - Validation
-
->>>>>>> Stashed changes
 In the terminal run the script
 
 ```
@@ -440,10 +390,6 @@ npm run cy:test
 
 This will execute all the scripts in the console. It will show the status of all the script execution. Later a HTML file will be generated within the mochareports fodlder.
 
-<<<<<<< Updated upstream
 
 
 ## THANK YOU 🙂
-=======
-# THANK YOU 🙂
->>>>>>> Stashed changes
