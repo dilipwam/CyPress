@@ -30,12 +30,12 @@ While extensions are always optionsal, they make life lot easy. Also as VS code 
 It is pretty easy to clone the repository and you need not worry about configurations as it is tested and certified. All you need to do is, copy the GIT repo URL for [CyPress](https://github.com/dilipwam/CyPress.git) and use it to clone. Or use any other way to clone that you know of.
 OR download as compressed file and extract in your target directory.
 ALTERNATIVELY, use the CLI and use the following command in your target directory.
-```node
+```bash
 gh repo clone dilipwam/CyPress
 ```
 
 Once you have cloned the file and it is ready, open the terminal or command prompt in the target folder and run the folloeing commands
-```node
+```bash
 npm install
 npm run cy:open
 ```
@@ -64,7 +64,7 @@ Ensure that the CurrentUser scope is set to RemoteSigned
 ### 3.1 Set up Cypress Project
 
 Once the required softwares are installed, open terminal or command prompt in the target directory. Remember this will be the root folder for the cypress project. Run the following two commands.
-```node
+```bash
 npm init -y
 npm install cypress --save-dev
 ```
@@ -87,7 +87,7 @@ Open package.json file and add the _"cy:open": "cypress open"_ under _scripts_. 
 
 Once the files are ready, go ahead and open the Cypress Window by running
 
-```
+```bash
 npm run cy:open
 ```
 
@@ -172,7 +172,7 @@ Follow this section to configure BDD / Cucumber for your project
 
 Use the terminal window and run the following commands within the root directory of the project folder.
 
-```
+```bash
 npm install @badeball/cypress-cucumber-preprocessor @bahmutov/cypress-esbuild-preprocessor esbuild --save-dev
 ```
 
@@ -256,7 +256,7 @@ Following is a sample file structure which can be used. The *SpecPattern* and *S
 ##### 3.3.1.4 - Validation
 In the terminal run the script
 
-```
+```bash
 npm run cy:open
 ```
 
@@ -267,19 +267,19 @@ npm run cy:open
 - Clicking any one of those, will run the test as per the script.
 - In case any issues are encountered whiile running feature files, _pause_ and _check & Recheck the configurations_.
 
-### 3.3.2 Configure Reports (HTML with MochAwesome)
+#### 3.3.2 Configure Reports (HTML with MochAwesome)
 
 While cypress supports multiple reporting, the MochAwesome HTML stands out. Follow this section to configure Mocha Reports for your project
 
-#### 3.3.2.1 - Dependencies
+##### 3.3.2.1 - Dependencies
 
 Use the terminal window and run the following commands within the root directory of the project folder.
 
-```
+```bash
 npm install mochawesome mochawesome-merge mochawesome-report-generator --save-dev
 ```
 
-#### 3.3.2.2 - Configuration
+##### 3.3.2.2 - Configuration
 
 Add following lines to your _çypress.config.js_ file. Make sure you place it inside e2e block for e2e testing. If you are using typescript, follow the _.ts_ specific syntax. Everything else will be same.
 
@@ -380,15 +380,277 @@ The 'package.json' will look like this after the changes.
 }
 ```
 
-#### 3.3.2.3 - Verification
+##### 3.3.2.3 - Verification
 
 In the terminal run the following script.
 
-```npm
+```bash
 npm run cy:test
 ```
 
 This will execute all the scripts in the console. It will show the status of all the script execution. Later a HTML file will be generated within the mochareports fodlder.
+
+
+
+#### 3.3.3 Configure Linter and Prettier (parser and Formatter)
+
+While User can follow best practices for coding, at times they will missout simple things. This is where ***Linter*** and ***Prettier*** come into picture. Linter is a parser, which scans the script to find common mistakes and flags them and user can later resolve them. On the otherhand Prettier takes care of the fomatting.
+
+##### 3.3.3.1 - Dependencies
+
+Use the terminal window and run the following commands within the root directory of the project folder.
+
+```bash
+npm install --save-dev eslint prettier eslint-plugin-cypress eslint-config-prettier eslint-plugin-prettier
+```
+
+##### 3.3.3.2 - Configuration
+
+You can configure the ESLint using the following command
+```bash
+npx eslint --init
+```
+You’ll be asked some questions — for a Cypress setup, a typical config might look like:
+> How would you like to use ESLint? → "To check syntax, find problems, and enforce code style"
+> What type of modules? → "JavaScript modules (import/export)"
+> Framework? → "None of these" (unless you're using React/Vue)
+> TypeScript? → "No" (unless you’re using TypeScript)
+> Where does your code run? → ✅ Node, ✅ Browser
+> Format? → Choose your preference (e.g., JSON or JavaScript)
+
+
+if not already exists, create a file named  _.eslintrc_ in the root folder and add the following
+
+```javascript
+{
+  "env": {
+    "browser": true,
+    "cypress/globals": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended", "plugin:cypress/recommended", "plugin:prettier/recommended"],
+  "plugins": ["cypress", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+// Add custom rules here
+ "prettier/prettier": "error"
+  }
+}
+```
+
+
+if not already exists, create a file named  _.prettierrc_ in the root folder and add the following
+
+```javascript
+{
+  "semi": true,
+  "singleQuote": true,
+  "printWidth": 100,
+  "trailingComma": "es5"
+}
+```
+
+if not already exists, create a file named  _.prettierignore_ in the root folder and add the following
+
+```bash
+.vs
+node_modules
+dist
+cypress/reports
+cypress/screenshots
+cypress/videos
+```
+Once all previous steps are done update the _package.json_ file with custom scripts to invoke ESLint and Prettier
+
+```javascript
+{
+...
+"scripts": {
+  "lint": "eslint cypress/",
+  "format": "prettier --write \"cypress/**/*.{js,ts,json}\""
+}
+...
+}
+```
+
+##### 3.3.3.3 - Verification
+
+In the terminal run the following script.
+
+```bash
+npm run lint     # Check code quality
+npm run format   # Auto-format with Prettier
+```
+
+
+#### 3.3.4 Configure Reading Secrets from Azure Keyvault
+
+
+##### 3.3.4.1. Install Dependencies
+
+If you haven’t already, install the Azure SDKs required for this:
+```bash
+npm install @azure/identity @azure/keyvault-secrets dotenv
+```
+
+##### 3.3.4.2 - Configuration / Local Dev
+File 1: Store the Azure credentials in .env file.
+_This file needs to be in **.gitignore** ._
+Store your Azure credentials securely. Your .env might look like:
+```env
+AZURE_CLIENT_ID=xxxxxxxx
+AZURE_TENANT_ID=xxxxxxxx
+AZURE_CLIENT_SECRET=xxxxxxxx
+KEY_VAULT_NAME=your-keyvault-name
+```
+Note: You can also use _az login_ if you don't want to hardcode credentials — the SDK will pick that up with DefaultAzureCredential.
+
+File 2: Create a new file _.fetchSecrets.js_
+```js
+require('dotenv').config();
+const { DefaultAzureCredential } = require('@azure/identity');
+const { SecretClient } = require('@azure/keyvault-secrets');
+const fs = require('fs');
+
+// following values will be picked from .env
+const vaultName = process.env.KEY_VAULT_NAME;
+const vaultUrl = `https://${vaultName}.vault.azure.net`;
+
+// Initiating Connection
+const credential = new DefaultAzureCredential();
+const client = new SecretClient(vaultUrl, credential);
+
+// List the secrets you want to fetch
+const secretsToFetch = ['KEYVAULT-NAME1', 'KEYVAULT-NAME2','KEYVAULT-NAME3','...];
+
+// Method to Fetch secrets
+async function main() {
+  const results = {};
+  for (const name of secretsToFetch) {
+    const secret = await client.getSecret(name);
+    results[`CYPRESS_${name}`] = secret.value;
+    console.log('**** KEY VAULT ***** ', name , '   =   ', secret.value)
+}
+
+  // Write secrets to .cypress.env.json (optional)
+  // This File must be added to **.GitIgnore**
+  fs.writeFileSync('cypress.env.json', JSON.stringify(results, null, 2));
+  console.log('✅ Cypress secrets saved to cypress.env.json');
+}
+
+main().catch((err) => {
+  console.error('❌ Failed to fetch secrets:', err);
+});
+```
+To valdiate the method, run the following command. It will show the Secrets and values it is fetching, and also will create a file _cypress.env.json_. For security reason this file must be added to **.GitIgnore**.
+```bash
+node fetchSecrets.js
+```
+Note: Due to security constraints, we cannot call keyvault from browser, and hence need to be exeuted before running cypress. Later we can use cypress to read the secret values from the created file.
+
+```env
+{
+  "CYPRESS_KEYVAULT-NAME1": "value1",
+  "CYPRESS_KEYVAULT-NAME2": "value2",
+  "CYPRESS_KEYVAULT-NAME3": "value3",
+  ...
+}
+```
+
+To access the values in cypress project, call this file by adding the follwoign in the test file. *CYPRESS_* prefix in the environment file will be automatically stripped by Cypress.
+
+```js
+const kvariable1 = Cypress.env('EYVAULT-NAME1');
+const kvariable2 = Cypress.env('EYVAULT-NAME2');
+const kvariable3 = Cypress.env('EYVAULT-NAME3');
+```
+
+To run cypress, use the following script.
+```bash
+node fetchSecrets.js
+npx cypress open
+```
+##### 3.3.4.2 - Configuration / CI CD pipeline
+File 1: Store the Azure credentials in .env file.
+_This file needs to be in **.gitignore** ._
+Store your Azure credentials securely. Your .env might look like:
+```env
+AZURE_CLIENT_ID=xxxxxxxx
+AZURE_TENANT_ID=xxxxxxxx
+AZURE_CLIENT_SECRET=xxxxxxxx
+KEY_VAULT_NAME=your-keyvault-name
+```
+Note: You can also use _az login_ if you don't want to hardcode credentials — the SDK will pick that up with DefaultAzureCredential.
+
+File 2: Create a new file _.fetchSecrets.js_
+```js
+require('dotenv').config();
+const { DefaultAzureCredential } = require('@azure/identity');
+const { SecretClient } = require('@azure/keyvault-secrets');
+const fs = require('fs');
+
+// following values will be picked from .env
+const vaultName = process.env.KEY_VAULT_NAME;
+const vaultUrl = `https://${vaultName}.vault.azure.net`;
+
+// Initiating Connection
+const credential = new DefaultAzureCredential();
+const client = new SecretClient(vaultUrl, credential);
+
+// List the secrets you want to fetch
+const secretsToFetch = ['KEYVAULT-NAME1', 'KEYVAULT-NAME2','KEYVAULT-NAME3','...];
+
+// Method to Fetch secrets
+async function main() {
+  const results = {};
+  for (const name of secretsToFetch) {
+    const secret = await client.getSecret(name);
+    results[`CYPRESS_${name}`] = secret.value;
+    console.log('**** KEY VAULT ***** ', name , '   =   ', secret.value)
+}
+
+  // Write secrets to .cypress.env.json (optional)
+  // This File must be added to **.GitIgnore**
+  fs.writeFileSync('cypress.env.json', JSON.stringify(results, null, 2));
+  console.log('✅ Cypress secrets saved to cypress.env.json');
+}
+
+main().catch((err) => {
+  console.error('❌ Failed to fetch secrets:', err);
+});
+```
+To valdiate the method, run the following command. It will show the Secrets and values it is fetching, and also will create a file _cypress.env.json_. For security reason this file must be added to **.GitIgnore**.
+```bash
+node fetchSecrets.js
+```
+Note: Due to security constraints, we cannot call keyvault from browser, and hence need to be exeuted before running cypress. Later we can use cypress to read the secret values from the created file.
+
+```env
+{
+  "CYPRESS_KEYVAULT-NAME1": "value1",
+  "CYPRESS_KEYVAULT-NAME2": "value2",
+  "CYPRESS_KEYVAULT-NAME3": "value3",
+  ...
+}
+```
+
+To access the values in cypress project, call this file by adding the follwoign in the test file. *CYPRESS_* prefix in the environment file will be automatically stripped by Cypress.
+
+```js
+const kvariable1 = Cypress.env('EYVAULT-NAME1');
+const kvariable2 = Cypress.env('EYVAULT-NAME2');
+const kvariable3 = Cypress.env('EYVAULT-NAME3');
+```
+
+To run cypress, use the following script.
+```bash
+node fetchSecrets.js
+npx cypress open
+```
 
 
 
