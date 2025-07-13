@@ -652,6 +652,12 @@ node fetchSecrets.js
 npx cypress open
 ```
 
+---
+
+> **Note:**  
+> For Page Object Model (POM) implementation details and best practices, refer to the `POM` folder and its `ReadMe.md` guide inside `cypress/e2e/POM`.
+
+
 
 
 ## THANK YOU 🙂

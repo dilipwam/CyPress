@@ -18,9 +18,22 @@ module.exports = defineConfig({
     html: false,
     json: true,
   },
+//Retries for Flaky Tests
+    retries: {
+    runMode: 2,
+    openMode: 0,
+  },
+// Video and Screenshot Configuration for Debugging
+    video: true,
+  screenshotsFolder: 'cypress/screenshots',
+  videosFolder: 'cypress/videos',
 
   e2e: {
+    //No Autorun on File Changes
     watchForFileChanges: false,
+    
+    //Test Isolation
+    testIsolation: true,
 
     specPattern: ['cypress/e2e/**/*.feature', 'cypress/e2e/**/*.cy.js'],
     stepDefinitions: [
