@@ -272,7 +272,8 @@ npm run cy:open
 > **Note:**  
 > For use case specific configurations and advanced setup (such as reporting, formatter, Azure Key Vault integration, and more), refer to the files in the `cypress/INSTRUCTIONS` folder:
 > - [Reports.md](cypress/INSTRUCTIONS/Reports.md) for reporting setup
-> - [Formatter.md](cypress/INSTRUCTIONS/formatter.md) for code formatting and linting
+> - [Formatter.md](cypress/INSTRUCTIONS/Formatter.md) for code formatting and linting
+> - [Read&WriteFiles.md](cypress/INSTRUCTIONS/Read&WriteFiles.md) to Read from or Write to a file (Could be used for test data or data storage)
 > - [AzureKeyVault.md](cypress/INSTRUCTIONS/AzureKeyVault.md) for Azure Key Vault integration
 > - [POMGuide.md](cypress/INSTRUCTIONS/POMGuide.md) for PAGE OBJECT MODEL implementation
 > - [ParallelExecution.md](cypress/INSTRUCTIONS/ParallelExecution.md) to run the scripts in Parallel in multiple browser

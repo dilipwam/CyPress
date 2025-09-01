@@ -30,7 +30,7 @@
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^21.0.2",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.3",
-    "cypress": "^13.16.1",
+    "cypress": "^15.0.0",
     "esbuild": "^0.24.0",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
